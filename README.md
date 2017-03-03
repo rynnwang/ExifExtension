@@ -1,2 +1,3 @@
-# ExifExtension
-EXIF extension based on C#
+# MediaExtension
+Media extension based on C#
+- EXIF
