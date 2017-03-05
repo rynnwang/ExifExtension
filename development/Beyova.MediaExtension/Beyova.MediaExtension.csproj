@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Beyova.Common, Version=3.0.0.0, Culture=neutral, PublicKeyToken=d55e8b6a979ee1b5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Beyova.Common.3.12.1\lib\Beyova.Common.dll</HintPath>
+      <HintPath>..\packages\Beyova.Common.3.12.3-build2\lib\Beyova.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -49,8 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Photo\Exif\ExposurePrograms.cs" />
-    <Compile Include="Photo\Exif\ExposureMeteringModes.cs" />
+    <Compile Include="Photo\Exif\ExposureProgram.cs" />
+    <Compile Include="Photo\Exif\ExposureMeteringMode.cs" />
     <Compile Include="Photo\Exif\ExifDataTypes.cs" />
     <Compile Include="Photo\Exif\Model\EquipmentInfo.cs" />
     <Compile Include="Photo\Exif\Model\ExifInfo.cs" />

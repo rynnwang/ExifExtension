@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Beyova.Media.Exif
 {
+    /// <summary>
+    /// Class ExifInfo.
+    /// </summary>
     public class ExifInfo
     {
         /// <summary>
@@ -68,11 +71,95 @@ namespace Beyova.Media.Exif
         /// <value>The copyright.</value>
         public string Copyright { get; set; }
 
+        /// <summary>
+        /// Gets or sets the digitized stamp.
+        /// </summary>
+        /// <value>The digitized stamp.</value>
         public DateTime? DigitizedStamp { get; set; }
 
+        /// <summary>
+        /// Gets or sets the original stamp.
+        /// </summary>
+        /// <value>The original stamp.</value>
         public DateTime? OriginalStamp { get; set; }
 
+        /// <summary>
+        /// Gets or sets the last updated stamp.
+        /// </summary>
+        /// <value>The last updated stamp.</value>
         public DateTime? LastUpdatedStamp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the software.
+        /// </summary>
+        /// <value>The software.</value>
+        public string Software { get; set; }
+
+        /// <summary>
+        /// Gets or sets the equipment maker.
+        /// </summary>
+        /// <value>The equipment maker.</value>
+        public string EquipmentMaker { get; set; }
+
+        /// <summary>
+        /// Gets or sets the equipment model.
+        /// </summary>
+        /// <value>The equipment model.</value>
+        public string EquipmentModel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the exposure time.
+        /// </summary>
+        /// <value>The exposure time.</value>
+        public FractionObject ExposureTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the exposure program.
+        /// </summary>
+        /// <value>The exposure program.</value>
+        public ExposureProgram? ExposureProgram { get; set; }
+
+        /// <summary>
+        /// Gets or sets the artist.
+        /// </summary>
+        /// <value>The artist.</value>
+        public string Artist { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user comment.
+        /// </summary>
+        /// <value>The user comment.</value>
+        public string UserComment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the exposure metering mode.
+        /// </summary>
+        /// <value>The exposure metering mode.</value>
+        public ExposureMeteringMode? ExposureMeteringMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the aperture.
+        /// </summary>
+        /// <value>The aperture.</value>
+        public double? Aperture { get; set; }
+
+        /// <summary>
+        /// Gets or sets the iso.
+        /// </summary>
+        /// <value>The iso.</value>
+        public Int16? ISO { get; set; }
+
+        /// <summary>
+        /// Gets or sets the subject distance.
+        /// </summary>
+        /// <value>The subject distance.</value>
+        public double? SubjectDistance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the length of the focal.
+        /// </summary>
+        /// <value>The length of the focal.</value>
+        public double? FocalLength { get; set; }
     }
 }
 

@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Beyova.Common, Version=3.0.0.0, Culture=neutral, PublicKeyToken=d55e8b6a979ee1b5, processorArchitecture=MSIL">
-      <HintPath>..\development\packages\Beyova.Common.3.12.1\lib\Beyova.Common.dll</HintPath>
+      <HintPath>..\packages\Beyova.Common.3.12.3-build2\lib\Beyova.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -63,7 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\development\Beyova.MediaExtension\Beyova.MediaExtension.csproj">
+    <ProjectReference Include="..\Beyova.MediaExtension\Beyova.MediaExtension.csproj">
       <Project>{93624696-d148-4d6d-aa33-1bce6ba217bf}</Project>
       <Name>Beyova.MediaExtension</Name>
     </ProjectReference>

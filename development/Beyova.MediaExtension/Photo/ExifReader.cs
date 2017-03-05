@@ -15,35 +15,6 @@ namespace Beyova.Media
         protected System.Text.Encoding _Encoding = System.Text.Encoding.UTF8;
         protected const string datetimeFormat = @"yyyy\:MM\:dd HH\:mm\:ss";
 
-        #region Type declarations
-
-        /// <summary>
-        /// Struct RationalObject
-        /// </summary>
-        public struct RationalObject
-        {
-            public Int32 Numerator { get; set; }
-
-            public Int32 Denominator { get; set; }
-
-            public override string ToString()
-            {
-                return ToString("/");
-            }
-
-            public string ToString(string delimiter)
-            {
-                return Numerator + "/" + Denominator;
-            }
-
-            public double ToDouble()
-            {
-                return (double)Numerator / Denominator;
-            }
-        }
-
-        #endregion
-
         protected ExifOperator(Bitmap bitmap)
         {
             this._image = bitmap;
@@ -56,11 +27,7 @@ namespace Beyova.Media
             SB.Append("Image:");
 
 
-            SB.Append("\nShooting conditions:");
-            SB.Append("\n\tExposure time: " + this.ExposureTime.ToString("N4") + " s");
-            SB.Append("\n\tExposure program: " + Enum.GetName(typeof(ExposurePrograms), this.ExposureProgram));
-            SB.Append("\n\tExposure mode: " + Enum.GetName(typeof(ExposureMeteringModes), this.ExposureMeteringMode));
-            SB.Append("\n\tAperture: F" + this.Aperture.ToString("N2"));
+
             SB.Append("\n\tISO sensitivity: " + this.ISO);
             SB.Append("\n\tSubject distance: " + this.SubjectDistance.ToString("N2") + " m");
             SB.Append("\n\tFocal length: " + this.FocalLength);
@@ -110,51 +77,27 @@ namespace Beyova.Media
             }
         }
 
-        public DateTime LastUpdatedStamp
+        public DateTime? LastUpdatedStamp
         {
             get
             {
-                try
-                {
-                    return DateTime.ParseExact(this.GetPropertyString(ExifProperty.DateTime), datetimeFormat, null);
-                }
-                catch
-                {
-                    return DateTime.MinValue;
-                }
+                return this.GetPropertyString(ExifProperty.DateTime).ToDateTime(datetimeFormat, DateTimeStyles.AssumeUniversal);
             }
             set
             {
-                try
-                {
-                    this.SetPropertyString(ExifProperty.DateTime, value.ToString(datetimeFormat));
-                }
-                catch
-                { }
+                this.SetPropertyString(ExifProperty.DateTime, value.HasValue ? value.Value.ToString(datetimeFormat) : string.Empty);
             }
         }
 
-        public DateTime OriginalDateTime
+        public DateTime? OriginalStamp
         {
             get
             {
-                try
-                {
-                    return DateTime.ParseExact(this.GetPropertyString(ExifProperty.ExifDTOrig), datetimeFormat, null);
-                }
-                catch
-                {
-                    return DateTime.MinValue;
-                }
+                return this.GetPropertyString(ExifProperty.ExifDTOrig).ToDateTime(datetimeFormat, DateTimeStyles.AssumeUniversal);
             }
             set
             {
-                try
-                {
-                    this.SetPropertyString(ExifProperty.ExifDTOrig, value.ToString(datetimeFormat));
-                }
-                catch
-                { }
+                this.SetPropertyString(ExifProperty.ExifDTOrig, value.HasValue ? value.Value.ToString(datetimeFormat) : string.Empty);
             }
         }
 
@@ -162,8 +105,7 @@ namespace Beyova.Media
         {
             get
             {
-                DateTime dateTime;
-                return DateTime.TryParseExact(this.GetPropertyString(ExifProperty.ExifDTDigitized), datetimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out dateTime) ? dateTime : null as DateTime?;
+                return this.GetPropertyString(ExifProperty.ExifDTDigitized).ToDateTime(datetimeFormat, DateTimeStyles.AssumeUniversal);
             }
             set
             {
@@ -243,14 +185,14 @@ namespace Beyova.Media
             }
             set
             {
-                try
-                {
-                    this.SetPropertyString(ExifProperty.ImageTitle, value);
-                }
-                catch { }
+                this.SetPropertyString(ExifProperty.ImageTitle, value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets the user comment.
+        /// </summary>
+        /// <value>The user comment.</value>
         public string UserComment
         {
             get
@@ -263,6 +205,10 @@ namespace Beyova.Media
             }
         }
 
+        /// <summary>
+        /// Gets or sets the artist.
+        /// </summary>
+        /// <value>The artist.</value>
         public string Artist
         {
             get
@@ -275,6 +221,10 @@ namespace Beyova.Media
             }
         }
 
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>The description.</value>
         public string Description
         {
             get
@@ -287,6 +237,10 @@ namespace Beyova.Media
             }
         }
 
+        /// <summary>
+        /// Gets or sets the copyright.
+        /// </summary>
+        /// <value>The copyright.</value>
         public string Copyright
         {
             get
@@ -299,6 +253,10 @@ namespace Beyova.Media
             }
         }
 
+        /// <summary>
+        /// Gets the exposure time abs.
+        /// </summary>
+        /// <value>The exposure time abs.</value>
         public double? ExposureTimeAbs
         {
             get
@@ -322,38 +280,43 @@ namespace Beyova.Media
         /// Gets the exposure time.
         /// </summary>
         /// <value>The exposure time.</value>
-        public RationalObject ExposureTime
+        public FractionObject ExposureTime
         {
             get
             {
-                return this.IsPropertyDefined(ExifProperty.ExifExposureTime) ? this.GetPropertyRational(ExifProperty.ExifExposureTime) : new RationalObject();
+                return this.IsPropertyDefined(ExifProperty.ExifExposureTime) ? this.GetPropertyRational(ExifProperty.ExifExposureTime) : new FractionObject();
             }
         }
 
-        public double Aperture
+        /// <summary>
+        /// Gets the aperture.
+        /// </summary>
+        /// <value>The aperture.</value>
+        public double? Aperture
         {
             get
             {
                 if (this.IsPropertyDefined(ExifProperty.ExifFNumber))
+                {
                     return this.GetPropertyRational(ExifProperty.ExifFNumber).ToDouble();
-                else
-                if (this.IsPropertyDefined(ExifProperty.ExifAperture))
+                }
+                else if (this.IsPropertyDefined(ExifProperty.ExifAperture))
+                {
                     return Math.Pow(System.Math.Sqrt(2), this.GetPropertyRational(ExifProperty.ExifAperture).ToDouble());
+                }
                 else
-                    return 0;
+                {
+                    return null;
+                }
             }
         }
 
-        public ExposurePrograms ExposureProgram
+        public ExposureProgram ExposureProgram
         {
             get
             {
-                Int32 X = this.GetPropertyInt16(ExifProperty.ExifExposureProg);
-
-                if (Enum.IsDefined(typeof(ExposurePrograms), X))
-                    return (ExposurePrograms)Enum.Parse(typeof(ExposurePrograms), Enum.GetName(typeof(ExposurePrograms), X));
-                else
-                    return ExposurePrograms.Normal;
+                Int32 x = this.GetPropertyInt16(ExifProperty.ExifExposureProg);
+                return x.ParseToEnum<ExposureProgram>(ExposureProgram.Normal);
             }
         }
 
@@ -362,52 +325,60 @@ namespace Beyova.Media
             get { return this.GetPropertyInt16(ExifProperty.ExifISOSpeed); }
         }
 
+        /// <summary>
+        /// Gets the subject distance.
+        /// </summary>
+        /// <value>The subject distance.</value>
         public double SubjectDistance
         {
             get { return this.GetPropertyRational(ExifProperty.ExifSubjectDist).ToDouble(); }
         }
 
-        public ExposureMeteringModes ExposureMeteringMode
+        /// <summary>
+        /// Gets the exposure metering mode.
+        /// </summary>
+        /// <value>The exposure metering mode.</value>
+        public ExposureMeteringMode ExposureMeteringMode
         {
             get
             {
-                Int32 X = this.GetPropertyInt16(ExifProperty.ExifMeteringMode);
-
-                if (Enum.IsDefined(typeof(ExposureMeteringModes), X))
-                    return (ExposureMeteringModes)Enum.Parse(typeof(ExposureMeteringModes), Enum.GetName(typeof(ExposureMeteringModes), X));
-                else
-                    return ExposureMeteringModes.Unknown;
+                Int32 x = this.GetPropertyInt16(ExifProperty.ExifMeteringMode);
+                return x.ParseToEnum<ExposureMeteringMode>(ExposureMeteringMode.Unknown);
             }
         }
 
+        /// <summary>
+        /// Gets the length of the focal.
+        /// </summary>
+        /// <value>The length of the focal.</value>
         public double FocalLength
         {
             get { return this.GetPropertyRational(ExifProperty.ExifFocalLength).ToDouble(); }
         }
 
+        /// <summary>
+        /// Gets the flash mode.
+        /// </summary>
+        /// <value>The flash mode.</value>
         public FlashMode FlashMode
         {
             get
             {
-                Int32 X = this.GetPropertyInt16(ExifProperty.ExifFlash);
-
-                if (Enum.IsDefined(typeof(FlashMode), X))
-                    return (FlashMode)Enum.Parse(typeof(FlashMode), Enum.GetName(typeof(FlashMode), X));
-                else
-                    return FlashMode.NotFired;
+                Int32 x = this.GetPropertyInt16(ExifProperty.ExifFlash);
+                return x.ParseToEnum<FlashMode>(FlashMode.NotFired);
             }
         }
 
+        /// <summary>
+        /// Gets the light source.
+        /// </summary>
+        /// <value>The light source.</value>
         public LightSource LightSource
         {
             get
             {
-                Int32 X = this.GetPropertyInt16(ExifProperty.ExifLightSource);
-
-                if (Enum.IsDefined(typeof(LightSource), X))
-                    return (LightSource)Enum.Parse(typeof(LightSource), Enum.GetName(typeof(LightSource), X));
-                else
-                    return LightSource.Unknown;
+                Int32 x = this.GetPropertyInt16(ExifProperty.ExifLightSource);
+                return x.ParseToEnum<LightSource>(LightSource.Unknown);
             }
         }
 
@@ -424,6 +395,8 @@ namespace Beyova.Media
         {
             return (Array.IndexOf(this._image.PropertyIdList, (int)propertyId) > -1);
         }
+
+        #region GetProperty
 
         /// <summary>
         /// Gets the property int32.
@@ -474,14 +447,16 @@ namespace Beyova.Media
         /// </summary>
         /// <param name="propertyId">The property identifier.</param>
         /// <returns>Rational.</returns>
-        protected RationalObject GetPropertyRational(ExifProperty propertyId)
+        protected FractionObject GetPropertyRational(ExifProperty propertyId)
         {
-            return (IsPropertyDefined(propertyId)) ? GetRational(this._image.GetPropertyItem((int)propertyId).Value) : new RationalObject
+            return (IsPropertyDefined(propertyId)) ? GetRational(this._image.GetPropertyItem((int)propertyId).Value) : new FractionObject
             {
                 Numerator = 0,
                 Denominator = 1
             };
         }
+
+        #endregion
 
         #region SetProperty
 
@@ -598,11 +573,11 @@ namespace Beyova.Media
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>RationalObject.</returns>
-        protected RationalObject GetRational(byte[] data)
+        protected FractionObject GetRational(byte[] data)
         {
             if (data == null)
             {
-                return default(RationalObject);
+                return default(FractionObject);
             }
 
             byte[] N = new byte[4];
@@ -610,7 +585,7 @@ namespace Beyova.Media
 
             Array.Copy(data, 0, N, 0, 4);
             Array.Copy(data, 4, D, 0, 4);
-            return new RationalObject
+            return new FractionObject
             {
                 Denominator = this.GetInt32(D),
                 Numerator = this.GetInt32(N)
@@ -631,25 +606,31 @@ namespace Beyova.Media
                 Title = this.Title,
                 Description = this.Description,
                 Copyright = this.Copyright,
-                LastUpdatedStamp=this.DateTimeLastModified,
+                LastUpdatedStamp = this.LastUpdatedStamp,
                 DigitizedStamp = this.DigitizedStamp,
-
+                OriginalStamp = this.OriginalStamp,
+                Software = this.Software,
+                EquipmentMaker = this.EquipmentMaker,
+                EquipmentModel = this.EquipmentModel,
+                ExposureTime = this.ExposureTime,
+                ExposureProgram = this.ExposureProgram,
+                Artist = this.Artist,
+                UserComment = this.UserComment,
+                LightSource = this.LightSource,
+                FlashMode = this.FlashMode,
+                ExposureMeteringMode = this.ExposureMeteringMode,
+                Aperture = this.Aperture,
+                ISO = this.ISO,
+                SubjectDistance = this.SubjectDistance,
+                FocalLength = this.FocalLength
             };
-
-
-
-            SB.Append("\nEquipment:");
-            SB.Append("\n\tMaker: " + this.EquipmentMaker);
-            SB.Append("\n\tModel: " + this.EquipmentModel);
-            SB.Append("\n\tSoftware: " + this.Software);
-            SB.Append("\nDate and time:");
-            SB.Append("\n\tGeneral: " + this.DateTimeLastModified.ToString());
-            SB.Append("\n\tOriginal: " + this.OriginalDateTime.ToString());
-            SB.Append("\n\tDigitized: " + this.DigitizedStamp.ToString());
 
             return result;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             this._image.Dispose();
@@ -669,7 +650,6 @@ namespace Beyova.Media
         }
 
         #endregion
-
     }
 
 }

@@ -7,42 +7,42 @@ using System.Threading.Tasks;
 namespace Beyova.Media.Exif
 {
     /// <summary>
-    /// Enum Orientation
+    /// Enum ExposureProgram
     /// </summary>
-    public enum Orientation
+    public enum ExposureProgram
     {
         /// <summary>
-        /// The top left
+        /// The manual
         /// </summary>
-        TopLeft = 1,
+        Manual = 1,
         /// <summary>
-        /// The top right
+        /// The normal
         /// </summary>
-        TopRight = 2,
+        Normal = 2,
         /// <summary>
-        /// The bottom right
+        /// The aperture priority
         /// </summary>
-        BottomRight = 3,
+        AperturePriority = 3,
         /// <summary>
-        /// The bottom left
+        /// The shutter priority
         /// </summary>
-        BottomLeft = 4,
+        ShutterPriority = 4,
         /// <summary>
-        /// The left top
+        /// The creative
         /// </summary>
-        LeftTop = 5,
+        Creative = 5,
         /// <summary>
-        /// The right top
+        /// The action
         /// </summary>
-        RightTop = 6,
+        Action = 6,
         /// <summary>
-        /// The right bottom
+        /// The portrait
         /// </summary>
-        RightBottom = 7,
+        Portrait = 7,
         /// <summary>
-        /// The LFT bottom
+        /// The landscape
         /// </summary>
-        LftBottom = 8
+        Landscape = 8,
     }
 }
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beyova.MediaExtension", "Beyova.MediaExtension\Beyova.MediaExtension.csproj", "{93624696-D148-4D6D-AA33-1BCE6BA217BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beyova.MediaExtension.UnitTest", "..\Beyova.MediaExtension.UnitTest\Beyova.MediaExtension.UnitTest.csproj", "{7B058AE9-7042-4D9B-8B9D-424BD6BE119F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beyova.MediaExtension.UnitTest", "Beyova.MediaExtension.UnitTest\Beyova.MediaExtension.UnitTest.csproj", "{7B058AE9-7042-4D9B-8B9D-424BD6BE119F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

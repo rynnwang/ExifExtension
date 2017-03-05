@@ -7,42 +7,42 @@ using System.Threading.Tasks;
 namespace Beyova.Media.Exif
 {
     /// <summary>
-    /// Enum Orientation
+    /// Enum ExposureMeteringMode
     /// </summary>
-    public enum Orientation
+    public enum ExposureMeteringMode
     {
         /// <summary>
-        /// The top left
+        /// The unknown
         /// </summary>
-        TopLeft = 1,
+        Unknown = 0,
         /// <summary>
-        /// The top right
+        /// The average
         /// </summary>
-        TopRight = 2,
+        Average = 1,
         /// <summary>
-        /// The bottom right
+        /// The center weighted average
         /// </summary>
-        BottomRight = 3,
+        CenterWeightedAverage = 2,
         /// <summary>
-        /// The bottom left
+        /// The spot
         /// </summary>
-        BottomLeft = 4,
+        Spot = 3,
         /// <summary>
-        /// The left top
+        /// The multi spot
         /// </summary>
-        LeftTop = 5,
+        MultiSpot = 4,
         /// <summary>
-        /// The right top
+        /// The multi segment
         /// </summary>
-        RightTop = 6,
+        MultiSegment = 5,
         /// <summary>
-        /// The right bottom
+        /// The partial
         /// </summary>
-        RightBottom = 7,
+        Partial = 6,
         /// <summary>
-        /// The LFT bottom
+        /// The other
         /// </summary>
-        LftBottom = 8
+        Other = 255
     }
 }
 
