@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Beyova.MediaExtension.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Beyova.Common, Version=3.0.0.0, Culture=neutral, PublicKeyToken=d55e8b6a979ee1b5, processorArchitecture=MSIL">
@@ -52,8 +53,7 @@
     <Compile Include="Photo\Exif\ExposureProgram.cs" />
     <Compile Include="Photo\Exif\ExposureMeteringMode.cs" />
     <Compile Include="Photo\Exif\ExifDataTypes.cs" />
-    <Compile Include="Photo\Exif\Model\EquipmentInfo.cs" />
-    <Compile Include="Photo\Exif\Model\ExifInfo.cs" />
+    <Compile Include="Photo\Exif\ExifInfo.cs" />
     <Compile Include="Photo\Exif\Orientation.cs" />
     <Compile Include="Photo\Exif\LightSource.cs" />
     <Compile Include="Photo\Exif\FlashMode.cs" />

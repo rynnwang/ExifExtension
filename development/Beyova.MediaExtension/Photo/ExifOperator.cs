@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Beyova.Media.Exif;
 
 namespace Beyova.Media
 {
+    /// <summary>
+    /// Class ExifOperator.
+    /// </summary>
     public class ExifOperator : IDisposable
     {
         /// <summary>
@@ -22,7 +21,7 @@ namespace Beyova.Media
         protected const string datetimeFormat = @"yyyy\:MM\:dd HH\:mm\:ss";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExifOperator"/> class.
+        /// Initializes a new instance of the <see cref="ExifOperator" /> class.
         /// </summary>
         /// <param name="bitmap">The bitmap.</param>
         protected ExifOperator(Bitmap bitmap)
@@ -207,6 +206,10 @@ namespace Beyova.Media
             }
         }
 
+        /// <summary>
+        /// Gets the longtitude.
+        /// </summary>
+        /// <value>The longtitude.</value>
         public double? Longtitude
         {
             get
@@ -374,6 +377,10 @@ namespace Beyova.Media
             }
         }
 
+        /// <summary>
+        /// Gets the exposure program.
+        /// </summary>
+        /// <value>The exposure program.</value>
         public ExposureProgram ExposureProgram
         {
             get
@@ -383,6 +390,10 @@ namespace Beyova.Media
             }
         }
 
+        /// <summary>
+        /// Gets the iso.
+        /// </summary>
+        /// <value>The iso.</value>
         public Int16 ISO
         {
             get { return this.GetPropertyInt16(ExifProperty.ExifISOSpeed); }
