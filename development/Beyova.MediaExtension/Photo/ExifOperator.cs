@@ -11,35 +11,31 @@ namespace Beyova.Media
 {
     public class ExifOperator : IDisposable
     {
+        /// <summary>
+        /// The _image
+        /// </summary>
         protected System.Drawing.Bitmap _image;
-        protected System.Text.Encoding _Encoding = System.Text.Encoding.UTF8;
+
+        /// <summary>
+        /// The datetime format
+        /// </summary>
         protected const string datetimeFormat = @"yyyy\:MM\:dd HH\:mm\:ss";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExifOperator"/> class.
+        /// </summary>
+        /// <param name="bitmap">The bitmap.</param>
         protected ExifOperator(Bitmap bitmap)
         {
             this._image = bitmap;
         }
 
-        public override string ToString()
-        {
-            System.Text.StringBuilder SB = new StringBuilder();
-
-            SB.Append("Image:");
-
-
-
-            SB.Append("\n\tISO sensitivity: " + this.ISO);
-            SB.Append("\n\tSubject distance: " + this.SubjectDistance.ToString("N2") + " m");
-            SB.Append("\n\tFocal length: " + this.FocalLength);
-            SB.Append("\n\tFlash: " + Enum.GetName(typeof(FlashMode), this.FlashMode));
-            SB.Append("\n\tLight source (WB): " + Enum.GetName(typeof(LightSource), this.LightSource));
-            //SB.Replace("\n", vbCrLf);
-            //SB.Replace("\t", vbTab);
-            return SB.ToString();
-        }
-
         #region Nicely formatted well-known properties
 
+        /// <summary>
+        /// Gets the equipment maker.
+        /// </summary>
+        /// <value>The equipment maker.</value>
         public string EquipmentMaker
         {
             get
@@ -48,6 +44,10 @@ namespace Beyova.Media
             }
         }
 
+        /// <summary>
+        /// Gets the equipment model.
+        /// </summary>
+        /// <value>The equipment model.</value>
         public string EquipmentModel
         {
             get
@@ -56,6 +56,10 @@ namespace Beyova.Media
             }
         }
 
+        /// <summary>
+        /// Gets the software.
+        /// </summary>
+        /// <value>The software.</value>
         public string Software
         {
             get
@@ -64,19 +68,23 @@ namespace Beyova.Media
             }
         }
 
-        public Beyova.Media.Exif.Orientation Orientation
+        /// <summary>
+        /// Gets the orientation.
+        /// </summary>
+        /// <value>The orientation.</value>
+        public Orientation Orientation
         {
             get
             {
-                Int32 X = this.GetPropertyInt16(Beyova.Media.Exif.ExifProperty.Orientation);
-
-                if (!Enum.IsDefined(typeof(Orientation), X))
-                    return Orientation.TopLeft;
-                else
-                    return (Orientation)Enum.Parse(typeof(Orientation), Enum.GetName(typeof(Orientation), X));
+                Int32 x = this.GetPropertyInt16(Beyova.Media.Exif.ExifProperty.Orientation);
+                return x.ParseToEnum<Orientation>(Orientation.TopLeft);
             }
         }
 
+        /// <summary>
+        /// Gets or sets the last updated stamp.
+        /// </summary>
+        /// <value>The last updated stamp.</value>
         public DateTime? LastUpdatedStamp
         {
             get
@@ -85,10 +93,14 @@ namespace Beyova.Media
             }
             set
             {
-                this.SetPropertyString(ExifProperty.DateTime, value.HasValue ? value.Value.ToString(datetimeFormat) : string.Empty);
+                this.SetPropertyString(ExifProperty.DateTime, value.ToString(datetimeFormat));
             }
         }
 
+        /// <summary>
+        /// Gets or sets the original stamp.
+        /// </summary>
+        /// <value>The original stamp.</value>
         public DateTime? OriginalStamp
         {
             get
@@ -97,10 +109,14 @@ namespace Beyova.Media
             }
             set
             {
-                this.SetPropertyString(ExifProperty.ExifDTOrig, value.HasValue ? value.Value.ToString(datetimeFormat) : string.Empty);
+                this.SetPropertyString(ExifProperty.ExifDTOrig, value.ToString(datetimeFormat));
             }
         }
 
+        /// <summary>
+        /// Gets or sets the digitized stamp.
+        /// </summary>
+        /// <value>The digitized stamp.</value>
         public DateTime? DigitizedStamp
         {
             get
@@ -109,7 +125,7 @@ namespace Beyova.Media
             }
             set
             {
-                this.SetPropertyString(ExifProperty.ExifDTDigitized, value.HasValue ? value.Value.ToString(datetimeFormat) : string.Empty);
+                this.SetPropertyString(ExifProperty.ExifDTDigitized, value.ToString(datetimeFormat));
             }
         }
 
@@ -135,21 +151,28 @@ namespace Beyova.Media
         /// Gets the resolution x.
         /// </summary>
         /// <value>The resolution x.</value>
-        public double ResolutionX
+        public double? ResolutionX
         {
             get
             {
-                double R = this.GetPropertyRational(ExifProperty.XResolution).ToDouble();
+                var resolution = this.GetPropertyFractionObject(ExifProperty.XResolution).ToDouble();
 
-                if (this.GetPropertyInt16(ExifProperty.ResolutionUnit) == 3)
+                if (resolution.HasValue)
                 {
-                    // Resolution unit: points/cm
-                    return R * 2.54;
+                    if (this.GetPropertyInt16(ExifProperty.ResolutionUnit) == 3)
+                    {
+                        // Resolution unit: points/cm
+                        return resolution.Value * 2.54;
+                    }
+                    else
+                    {
+                        // Resolution unit: points/inch
+                        return resolution.Value;
+                    }
                 }
                 else
                 {
-                    // Resolution unit: points/inch
-                    return R;
+                    return null;
                 }
             }
         }
@@ -158,25 +181,62 @@ namespace Beyova.Media
         /// Gets the resolution y.
         /// </summary>
         /// <value>The resolution y.</value>
-        public double ResolutionY
+        public double? ResolutionY
         {
             get
             {
-                double R = this.GetPropertyRational(ExifProperty.YResolution).ToDouble();
+                var resolution = this.GetPropertyFractionObject(ExifProperty.YResolution).ToDouble();
 
-                if (this.GetPropertyInt16(ExifProperty.ResolutionUnit) == 3)
+                if (resolution.HasValue)
                 {
-                    // Resolution unit: points/cm
-                    return R * 2.54;
+                    if (this.GetPropertyInt16(ExifProperty.ResolutionUnit) == 3)
+                    {
+                        // Resolution unit: points/cm
+                        return resolution.Value * 2.54;
+                    }
+                    else
+                    {
+                        // Resolution unit: points/inch
+                        return resolution.Value;
+                    }
                 }
                 else
                 {
-                    // Resolution unit: points/inch
-                    return R;
+                    return null;
                 }
             }
         }
 
+        public double? Longtitude
+        {
+            get
+            {
+                var resolution = this.GetPropertyFractionObject(ExifProperty.XResolution).ToDouble();
+
+                if (resolution.HasValue)
+                {
+                    if (this.GetPropertyInt16(ExifProperty.ResolutionUnit) == 3)
+                    {
+                        // Resolution unit: points/cm
+                        return resolution.Value * 2.54;
+                    }
+                    else
+                    {
+                        // Resolution unit: points/inch
+                        return resolution.Value;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        /// <value>The title.</value>
         public string Title
         {
             get
@@ -263,11 +323,13 @@ namespace Beyova.Media
             {
                 if (this.IsPropertyDefined(ExifProperty.ExifExposureTime))
                 {
-                    return this.GetPropertyRational(ExifProperty.ExifExposureTime).ToDouble();
+                    return this.GetPropertyFractionObject(ExifProperty.ExifExposureTime).ToDouble();
                 }
                 else if (this.IsPropertyDefined(ExifProperty.ExifShutterSpeed))
                 {
-                    return (1 / Math.Pow(2, this.GetPropertyRational(ExifProperty.ExifShutterSpeed).ToDouble()));
+                    var tmp = this.GetPropertyFractionObject(ExifProperty.ExifShutterSpeed).ToDouble();
+
+                    return tmp.HasValue ? (1 / Math.Pow(2, tmp.Value)) as double? : null;
                 }
                 else
                 {
@@ -280,11 +342,11 @@ namespace Beyova.Media
         /// Gets the exposure time.
         /// </summary>
         /// <value>The exposure time.</value>
-        public FractionObject ExposureTime
+        public FractionObject? ExposureTime
         {
             get
             {
-                return this.IsPropertyDefined(ExifProperty.ExifExposureTime) ? this.GetPropertyRational(ExifProperty.ExifExposureTime) : new FractionObject();
+                return this.IsPropertyDefined(ExifProperty.ExifExposureTime) ? this.GetPropertyFractionObject(ExifProperty.ExifExposureTime) : null;
             }
         }
 
@@ -298,11 +360,12 @@ namespace Beyova.Media
             {
                 if (this.IsPropertyDefined(ExifProperty.ExifFNumber))
                 {
-                    return this.GetPropertyRational(ExifProperty.ExifFNumber).ToDouble();
+                    return this.GetPropertyFractionObject(ExifProperty.ExifFNumber).ToDouble();
                 }
                 else if (this.IsPropertyDefined(ExifProperty.ExifAperture))
                 {
-                    return Math.Pow(System.Math.Sqrt(2), this.GetPropertyRational(ExifProperty.ExifAperture).ToDouble());
+                    var tmp = this.GetPropertyFractionObject(ExifProperty.ExifAperture).ToDouble();
+                    return tmp.HasValue ? Math.Pow(System.Math.Sqrt(2), tmp.Value) as double? : null;
                 }
                 else
                 {
@@ -329,9 +392,9 @@ namespace Beyova.Media
         /// Gets the subject distance.
         /// </summary>
         /// <value>The subject distance.</value>
-        public double SubjectDistance
+        public double? SubjectDistance
         {
-            get { return this.GetPropertyRational(ExifProperty.ExifSubjectDist).ToDouble(); }
+            get { return this.GetPropertyFractionObject(ExifProperty.ExifSubjectDist).ToDouble(); }
         }
 
         /// <summary>
@@ -351,9 +414,9 @@ namespace Beyova.Media
         /// Gets the length of the focal.
         /// </summary>
         /// <value>The length of the focal.</value>
-        public double FocalLength
+        public double? FocalLength
         {
-            get { return this.GetPropertyRational(ExifProperty.ExifFocalLength).ToDouble(); }
+            get { return this.GetPropertyFractionObject(ExifProperty.ExifFocalLength).ToDouble(); }
         }
 
         /// <summary>
@@ -380,6 +443,24 @@ namespace Beyova.Media
                 Int32 x = this.GetPropertyInt16(ExifProperty.ExifLightSource);
                 return x.ParseToEnum<LightSource>(LightSource.Unknown);
             }
+        }
+
+        /// <summary>
+        /// Gets the latitude.
+        /// </summary>
+        /// <value>The latitude.</value>
+        public GeoCoordinate? Latitude
+        {
+            get { return this.GetPropertyGeoCoordinate(ExifProperty.GpsLatitude); }
+        }
+
+        /// <summary>
+        /// Gets the longitude.
+        /// </summary>
+        /// <value>The longitude.</value>
+        public GeoCoordinate? Longitude
+        {
+            get { return this.GetPropertyGeoCoordinate(ExifProperty.GpsLongitude); }
         }
 
         #endregion
@@ -447,13 +528,19 @@ namespace Beyova.Media
         /// </summary>
         /// <param name="propertyId">The property identifier.</param>
         /// <returns>Rational.</returns>
-        protected FractionObject GetPropertyRational(ExifProperty propertyId)
+        protected FractionObject? GetPropertyFractionObject(ExifProperty propertyId)
         {
-            return (IsPropertyDefined(propertyId)) ? GetRational(this._image.GetPropertyItem((int)propertyId).Value) : new FractionObject
-            {
-                Numerator = 0,
-                Denominator = 1
-            };
+            return (IsPropertyDefined(propertyId)) ? GetFractionObject(this._image.GetPropertyItem((int)propertyId).Value) : null;
+        }
+
+        /// <summary>
+        /// Gets the property geo coordinate.
+        /// </summary>
+        /// <param name="propertyId">The property identifier.</param>
+        /// <returns>System.Nullable&lt;GeoPosition&gt;.</returns>
+        protected GeoCoordinate? GetPropertyGeoCoordinate(ExifProperty propertyId)
+        {
+            return (IsPropertyDefined(propertyId)) ? GetGeoCoordinate(this._image.GetPropertyItem((int)propertyId).Value) : null;
         }
 
         #endregion
@@ -573,11 +660,11 @@ namespace Beyova.Media
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>RationalObject.</returns>
-        protected FractionObject GetRational(byte[] data)
+        protected FractionObject? GetFractionObject(byte[] data)
         {
             if (data == null)
             {
-                return default(FractionObject);
+                return null;
             }
 
             byte[] N = new byte[4];
@@ -592,8 +679,55 @@ namespace Beyova.Media
             };
         }
 
+        /// <summary>
+        /// Gets the geo coordinate.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns>System.Nullable&lt;GeoCoordinate&gt;.</returns>
+        protected GeoCoordinate? GetGeoCoordinate(byte[] data)
+        {
+            if (data == null || data.Length != 24)
+            {
+                return null;
+            }
+
+            byte[] tmp = new byte[8];
+            Array.Copy(data, 0, tmp, 0, 8);
+            var degree = GetFractionObject(tmp);
+            if (!degree.HasValue)
+            {
+                return null;
+            }
+
+            Array.Copy(data, 8, tmp, 0, 8);
+            var minutes = GetFractionObject(tmp);
+            if (!minutes.HasValue)
+            {
+                return null;
+            }
+
+            Array.Copy(data, 16, tmp, 0, 8);
+            var seconds = GetFractionObject(tmp);
+
+            if (!seconds.HasValue)
+            {
+                return null;
+            }
+
+            return new GeoCoordinate
+            {
+                Degrees = (int)(degree.Value.ToDouble()),
+                Minutes = (int)(minutes.Value.ToDouble()),
+                Seconds = (int)(seconds.Value.ToDouble())
+            };
+        }
+
         #endregion
 
+        /// <summary>
+        /// Reads as exif information.
+        /// </summary>
+        /// <returns>ExifInfo.</returns>
         public ExifInfo ReadAsExifInfo()
         {
             var result = new ExifInfo
@@ -622,7 +756,12 @@ namespace Beyova.Media
                 Aperture = this.Aperture,
                 ISO = this.ISO,
                 SubjectDistance = this.SubjectDistance,
-                FocalLength = this.FocalLength
+                FocalLength = this.FocalLength,
+                GeoPosition = (this.Latitude.HasValue && this.Longitude.HasValue) ? new GeoPosition
+                {
+                    Latitude = this.Latitude.Value,
+                    Longitude = this.Longitude.Value
+                } as GeoPosition? : null
             };
 
             return result;
@@ -639,14 +778,25 @@ namespace Beyova.Media
         #region Static Methods
 
         /// <summary>
-        /// Creates the reader.
+        /// Creates the operator.
         /// </summary>
         /// <param name="bitmap">The bitmap.</param>
-        /// <returns>ExifReader.</returns>
-        public static ExifOperator CreateReader(Bitmap bitmap)
+        /// <returns>ExifOperator.</returns>
+        public static ExifOperator CreateOperator(Bitmap bitmap)
         {
             bitmap.CheckNullObject(nameof(bitmap));
             return new ExifOperator(bitmap.Clone() as Bitmap);
+        }
+
+        /// <summary>
+        /// Creates the operator.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns>ExifOperator.</returns>
+        public static ExifOperator CreateOperator(string path)
+        {
+            path.CheckEmptyString(nameof(path));
+            return new ExifOperator(Bitmap.FromFile(path) as Bitmap);
         }
 
         #endregion

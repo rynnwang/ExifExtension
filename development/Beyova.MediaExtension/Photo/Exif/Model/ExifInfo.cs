@@ -45,13 +45,13 @@ namespace Beyova.Media.Exif
         /// Gets or sets the resolution x. (dpi)
         /// </summary>
         /// <value>The resolution x.</value>
-        public double ResolutionX { get; set; }
+        public double? ResolutionX { get; set; }
 
         /// <summary>
         /// Gets or sets the resolution y. (dpi)
         /// </summary>
         /// <value>The resolution y.</value>
-        public double ResolutionY { get; set; }
+        public double? ResolutionY { get; set; }
 
         /// <summary>
         /// Gets or sets the title.
@@ -111,7 +111,7 @@ namespace Beyova.Media.Exif
         /// Gets or sets the exposure time.
         /// </summary>
         /// <value>The exposure time.</value>
-        public FractionObject ExposureTime { get; set; }
+        public FractionObject? ExposureTime { get; set; }
 
         /// <summary>
         /// Gets or sets the exposure program.
@@ -160,6 +160,12 @@ namespace Beyova.Media.Exif
         /// </summary>
         /// <value>The length of the focal.</value>
         public double? FocalLength { get; set; }
+
+        /// <summary>
+        /// Gets or sets the geo position.
+        /// </summary>
+        /// <value>The geo position.</value>
+        public GeoPosition? GeoPosition { get; set; }
     }
 }
 
