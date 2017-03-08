@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Beyova.Common, Version=3.0.0.0, Culture=neutral, PublicKeyToken=d55e8b6a979ee1b5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Beyova.Common.3.12.3-build4\lib\Beyova.Common.dll</HintPath>
+      <HintPath>..\packages\Beyova.Common.3.12.3\lib\Beyova.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -50,15 +50,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Photo\Exif\ExposureProgram.cs" />
-    <Compile Include="Photo\Exif\ExposureMeteringMode.cs" />
-    <Compile Include="Photo\Exif\ExifDataTypes.cs" />
-    <Compile Include="Photo\Exif\ExifInfo.cs" />
-    <Compile Include="Photo\Exif\Orientation.cs" />
-    <Compile Include="Photo\Exif\LightSource.cs" />
-    <Compile Include="Photo\Exif\FlashMode.cs" />
-    <Compile Include="Photo\Exif\ExifProperty.cs" />
-    <Compile Include="Photo\ExifOperator.cs" />
+    <Compile Include="Image\Exif\ExposureProgram.cs" />
+    <Compile Include="Image\Exif\ExposureMeteringMode.cs" />
+    <Compile Include="Image\Exif\ExifDataTypes.cs" />
+    <Compile Include="Image\Exif\ExifInfo.cs" />
+    <Compile Include="Image\Exif\Orientation.cs" />
+    <Compile Include="Image\Exif\LightSource.cs" />
+    <Compile Include="Image\Exif\FlashMode.cs" />
+    <Compile Include="Image\Exif\ExifProperty.cs" />
+    <Compile Include="Image\ExifOperator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

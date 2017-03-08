@@ -16,9 +16,9 @@ namespace Beyova.Media
         protected System.Drawing.Bitmap _image;
 
         /// <summary>
-        /// The datetime format
+        /// The dateTime format
         /// </summary>
-        protected const string datetimeFormat = @"yyyy\:MM\:dd HH\:mm\:ss";
+        protected const string dateTimeFormat = @"yyyy\:MM\:dd HH\:mm\:ss";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExifOperator" /> class.
@@ -88,11 +88,11 @@ namespace Beyova.Media
         {
             get
             {
-                return this.GetPropertyString(ExifProperty.DateTime).ToDateTime(datetimeFormat, DateTimeStyles.AssumeUniversal);
+                return this.GetPropertyString(ExifProperty.DateTime).ToDateTime(dateTimeFormat, DateTimeStyles.AssumeUniversal);
             }
             set
             {
-                this.SetPropertyString(ExifProperty.DateTime, value.ToString(datetimeFormat));
+                this.SetPropertyString(ExifProperty.DateTime, value.ToString(dateTimeFormat));
             }
         }
 
@@ -104,11 +104,11 @@ namespace Beyova.Media
         {
             get
             {
-                return this.GetPropertyString(ExifProperty.ExifDTOrig).ToDateTime(datetimeFormat, DateTimeStyles.AssumeUniversal);
+                return this.GetPropertyString(ExifProperty.ExifDTOrig).ToDateTime(dateTimeFormat, DateTimeStyles.AssumeUniversal);
             }
             set
             {
-                this.SetPropertyString(ExifProperty.ExifDTOrig, value.ToString(datetimeFormat));
+                this.SetPropertyString(ExifProperty.ExifDTOrig, value.ToString(dateTimeFormat));
             }
         }
 
@@ -120,11 +120,11 @@ namespace Beyova.Media
         {
             get
             {
-                return this.GetPropertyString(ExifProperty.ExifDTDigitized).ToDateTime(datetimeFormat, DateTimeStyles.AssumeUniversal);
+                return this.GetPropertyString(ExifProperty.ExifDTDigitized).ToDateTime(dateTimeFormat, DateTimeStyles.AssumeUniversal);
             }
             set
             {
-                this.SetPropertyString(ExifProperty.ExifDTDigitized, value.ToString(datetimeFormat));
+                this.SetPropertyString(ExifProperty.ExifDTDigitized, value.ToString(dateTimeFormat));
             }
         }
 
@@ -476,8 +476,6 @@ namespace Beyova.Media
 
         #endregion
 
-        #region Support methods for working with EXIF properties
-
         /// <summary>
         /// Determines whether [is property defined] [the specified property identifier].
         /// </summary>
@@ -623,6 +621,8 @@ namespace Beyova.Media
         }
 
         #endregion
+
+        #region GetXXX
 
         /// <summary>
         /// Gets the int32.
